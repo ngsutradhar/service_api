@@ -15,6 +15,7 @@ class CustomerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /* weetg wqtlkwjiot oquw4thoqw touqwehtou */
     public function index($orgId)
     {
         //

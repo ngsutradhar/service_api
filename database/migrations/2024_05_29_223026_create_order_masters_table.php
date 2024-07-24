@@ -19,9 +19,7 @@ return new class extends Migration
             $table->string('order_no',100)->nullable(false);
             $table->date('order_date')->nullable(false);
             $table->string('order_description')->nullable(true);
-
-              // create Service Type Foreign Key
-           
+            // create Service Type Foreign Key
             $table->bigInteger('service_type_id')->unsigned()->default(null);
             $table ->foreign('service_type_id')->references('id')->on('service_types');
 

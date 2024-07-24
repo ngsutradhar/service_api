@@ -1,10 +1,5 @@
 <?php
-
 namespace Database\Seeders;
-
-
-
-
 use App\Models\Chapter;
 use App\Models\Option;
 use App\Models\Organisation;
@@ -165,9 +160,15 @@ class DatabaseSeeder extends Seeder
         // User::create(['user_name'=>'Coder Student','mobile1'=>'9836444999','mobile2'=>'108'
         //     ,'email'=>'student','password'=>"81dc9bdb52d04dc20036dbd8313ed055",'user_type_id'=>8,'organisation_id'=>1]);
 
-        WorkType::create(['work_type_name' => 'Termite Treatment','rate' => 1200]);          #1
-        WorkType::create(['work_type_name' => 'Bug Killing','rate' => 1000]);                #2
-        WorkType::create(['work_type_name' => 'Mosquito Killing','rate' => 1500]);
+        WorkType::create(['work_type_name' => 'Termite','rate' => 1200]);          #1
+        WorkType::create(['work_type_name' => 'Cockroach','rate' => 1000]);                #2
+        WorkType::create(['work_type_name' => 'Bed Bug','rate' => 1500]);
+        WorkType::create(['work_type_name' => 'Ant','rate' => 800]);          #1
+        WorkType::create(['work_type_name' => 'Rat','rate' => 2500]);                #2
+        WorkType::create(['work_type_name' => 'Wood Boror','rate' => 6100]);
+        WorkType::create(['work_type_name' => 'Mosquito','rate' => 300]);          #1
+        WorkType::create(['work_type_name' => 'Snakes','rate' => 1300]);                #2
+        WorkType::create(['work_type_name' => 'Lizard','rate' => 10500]);
 
 
         ServiceType::create(['service_name' => 'One time']);          #1

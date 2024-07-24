@@ -8,6 +8,7 @@ use App\Http\Controllers\OrganisationController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\OrderMasterController;
+use App\Http\Controllers\ItemController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -59,8 +60,6 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::post("saveEmployee",[EmployeeController::class,'save_employee']);
     Route::post("updateEmployee",[EmployeeController::class,'update_employee']);
     
-    
-
     Route::get("getCustomer/{org}/{id}",[CustomerController::class,'get_customer_by_id']);
     Route::get("getAllCustomerList/{id}",[CustomerController::class,'index']);
     Route::post("saveCustomer",[CustomerController::class,'save_customer']);
@@ -75,6 +74,12 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get("/getEmployeeServiceScheduleByDate/{ordId}/{date}",[OrderMasterController::class, 'get_employee_service_schedule_by_date']);
     Route::get("/getEmployeeServiceScheduleByDateTime/{ordId}/{date}/{time}",[OrderMasterController::class, 'get_employee_service_schedule_by_date_and_time']);
     Route::get("getAllWorkType/{id}",[OrderMasterController::class,'get_all_worktype']);
+
+    Route::post("saveEquipment",[ItemController::class,'save_equipment']);
+    Route::post("saveItem",[ItemController::class,'save_item']);
+    Route::get("getAllItemList/{id}",[ItemController::class,'index']);
+    Route::get("getAllItemToServiceList/{id}",[ItemController::class,'get_all_item_to_servce']);
+    Route::post("saveItemToService",[ItemController::class,'save_item_to_service']);
 
     Route::get('/me', function(Request $request) {
         return auth()->user();

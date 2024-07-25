@@ -12,6 +12,27 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 class ItemController extends Controller
 {
+    public function update_item(Request $request)
+     {
+        DB::beginTransaction();
+
+        try{
+            $item= Item::findOrFail($request->input('itemId'));
+            $item ->item_name = $request->input('itemName');
+            $item ->technical_name = $request->input('technicalName');
+            $item ->item_description = $request->input('description');
+            $item ->organisation_id = $request->input('organisationId');
+
+            $item->save();
+          DB::commit();
+        }
+        catch(\Exception $e){
+            DB::rollBack();
+          return response()->json(['success'=>0,'exception'=>$e->getMessage()], 500);
+            //return $this->errorResponse($e->getMessage());
+        }
+        return response()->json(['success'=>1,'data'=>$item], 200,[],JSON_NUMERIC_CHECK);
+     }
     public function save_item(Request $request)
      {
         DB::beginTransaction();
@@ -43,6 +64,27 @@ class ItemController extends Controller
 
             $item= new ItemToService();
 
+            $item ->work_type_id = $request->input('workTypeId');
+            $item ->item_id = $request->input('itemId');
+            $item ->item_to_service_description = $request->input('description');
+            $item ->organisation_id = $request->input('organisationId');
+
+            $item->save();
+          DB::commit();
+        }
+        catch(\Exception $e){
+            DB::rollBack();
+          return response()->json(['success'=>0,'exception'=>$e->getMessage()], 500);
+            //return $this->errorResponse($e->getMessage());
+        }
+        return response()->json(['success'=>1,'data'=>$item], 200,[],JSON_NUMERIC_CHECK);
+     }
+     public function update_item_to_service(Request $request)
+     {
+        DB::beginTransaction();
+
+        try{
+            $item= ItemToService::findOrFail($request->input('itemToServiceId'));
             $item ->work_type_id = $request->input('workTypeId');
             $item ->item_id = $request->input('itemId');
             $item ->item_to_service_description = $request->input('description');
@@ -104,7 +146,7 @@ class ItemController extends Controller
     }
     public function get_all_item_to_servce($orgId)
     {
-       $result = DB::select("select item_to_services.id,
+       $result = DB::select("select item_to_services.id,item_to_services.work_type_id,item_to_services.item_id,
         items.item_name, items.technical_name,
         work_types.work_type_name,
         item_to_services.item_to_service_description,

@@ -76,7 +76,9 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
     Route::get("getAllWorkType/{id}",[OrderMasterController::class,'get_all_worktype']);
 
     Route::post("saveEquipment",[ItemController::class,'save_equipment']);
+    Route::post("updateItem",[ItemController::class,'update_item']);
     Route::post("saveItem",[ItemController::class,'save_item']);
+    Route::post("updateItemToService",[ItemController::class,'update_item_to_service']);
     Route::get("getAllItemList/{id}",[ItemController::class,'index']);
     Route::get("getAllItemToServiceList/{id}",[ItemController::class,'get_all_item_to_servce']);
     Route::post("saveItemToService",[ItemController::class,'save_item_to_service']);

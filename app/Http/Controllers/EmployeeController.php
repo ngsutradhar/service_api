@@ -15,6 +15,45 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function update_order_complete($id)
+    {
+         $result = DB::select("update order_details set is_completed=1,status_id=3,
+                     completed_date=CURDATE(), completed_time=CURRENT_TIMESTAMP
+                    where id='$id'");
+
+         $result = DB::select("select * from order_details where id='$id'");
+                    return response()->json(['success'=>1,'data'=> $result], 200,[],JSON_NUMERIC_CHECK);
+    }
+    public function get_employee_order_service_completed($orgId)
+    {
+        $result = DB::select("select customers.customer_name,
+                    customers.address,
+                    customers.city, 
+                    customers.district,
+                    customers.pin,
+                    customers.whatsapp_number,
+                    customers.contact_number ,
+                    order_masters.id as order_masters_id,
+                    order_masters.order_no,
+                    order_masters.order_date,
+                    employees.employee_name,
+                    employees.id,
+                    work_types.work_type_name, 
+                    work_types.rate,
+                    order_details.id as order_details_id,
+                    order_details.working_date, 
+                    order_details.completed_date,
+                    order_details.completed_time,
+                    DATEDIFF(order_details.completed_date,order_details.working_date) as completed_days
+                    from order_masters
+                    inner join order_details on order_details.order_master_id = order_masters.id
+                    inner join customers ON customers.id = order_masters.customer_id
+                    inner join employees ON employees.id = order_details.employee_id
+                    inner join work_types ON work_types.id = order_details.work_type_id
+                    where order_details.status_id=3 and order_details.is_completed=1 and order_masters.organisation_id='$orgId'
+                    order by order_details.completed_date desc");
+        return response()->json(['success'=>1,'data'=> $result], 200,[],JSON_NUMERIC_CHECK);
+    }
     public function get_employee_order_service_pending($orgId,$id)
     {
         $result = DB::select("select customers.customer_name,
@@ -24,20 +63,23 @@ class EmployeeController extends Controller
                     customers.pin,
                     customers.whatsapp_number,
                     customers.contact_number ,
+                    order_masters.id as order_masters_id,
                     order_masters.order_no,
                     order_masters.order_date,
                     employees.employee_name,
                     employees.id,
                     work_types.work_type_name, 
                     work_types.rate,
+                    order_details.id as order_details_id,
                     order_details.working_date, 
+                    DATEDIFF(order_details.working_date,CURDATE()) as due_date,
                     order_details.working_time
                     from order_masters
                     inner join order_details on order_details.order_master_id = order_masters.id
                     inner join customers ON customers.id = order_masters.customer_id
                     inner join employees ON employees.id = order_details.employee_id
                     inner join work_types ON work_types.id = order_details.work_type_id
-                    where order_details.status_id=1 and employees.id='$id' and order_masters.organisation_id='$orgId'
+                    where order_details.status_id=1 and order_details.is_completed=0 and employees.id='$id' and order_masters.organisation_id='$orgId'
                     order by order_masters.order_date");
         return response()->json(['success'=>1,'data'=> $result], 200,[],JSON_NUMERIC_CHECK);
     }
@@ -84,9 +126,18 @@ class EmployeeController extends Controller
         employees.email_id,
         employees.qualification, 
         employees.pin,
-        employees.organisation_id
+        employees.organisation_id,
+        organisations.organisation_name,
+        organisations.address as org_address, 
+        organisations.city as org_city,
+        organisations.district as org_district,
+        organisations.pin as org_pin, 
+        organisations.contact_number org_contact_number,
+        organisations.whatsapp_number as org_whatsapp_number,
+        organisations.email_id as org_email_id
         FROM employees 
         inner join employee_categories ON employee_categories.id = employees.employee_category_id
+        inner join organisations ON organisations.id = employees.organisation_id
         where employees.organisation_id='$orgId' order by employees.id desc");
         return response()->json(['success'=>1,'data'=> $result], 200,[],JSON_NUMERIC_CHECK);
     }

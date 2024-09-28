@@ -30,6 +30,9 @@ return new class extends Migration
             $table ->foreign('status_id')->references('id')->on('statuses');
 
             $table->enum('inforce', array(0, 1))->default(1);
+            $table->bigInteger('is_completed')->default(0);
+            $table->date('completed_date')->nullable(false);
+            $table->string('completed_time',20)->nullable(false);
             $table->timestamps();
         });
     }

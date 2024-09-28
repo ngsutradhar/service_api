@@ -53,6 +53,9 @@ Route::get("getAllUserList",[UserController::class,'get_all_user_list']);
 Route::group(['middleware' => 'auth:sanctum'], function(){
     //All secure URL's
     // Employee API
+    Route::get("updateOrderCompleted/{id}",[EmployeeController::class,'update_order_complete']);
+    Route::get("getEmployeeOrderServiceCompleted/{org}",[EmployeeController::class,'get_employee_order_service_completed']);
+
     Route::get("getEmployeeOrderServicePending/{org}/{id}",[EmployeeController::class,'get_employee_order_service_pending']);
     Route::get("getEmployeeAndOrganisation/{id}",[EmployeeController::class,'get_employee_organisation_by_id']);
     Route::get("getAllEmployeeList/{id}",[EmployeeController::class,'index']);
